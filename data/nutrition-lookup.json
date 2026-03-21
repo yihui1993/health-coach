@@ -1,0 +1,86 @@
+{
+  "standard breakfast": {
+    "description": "1 egg, 15g protein powder, 240ml soymilk",
+    "calories": 230,
+    "protein_g": 29,
+    "carbs_g": 6.5,
+    "fat_g": 9.75
+  },
+  "cottage cheese": {
+    "description": "Low fat cottage cheese from Costco",
+    "calories": 90,
+    "protein_g": 10,
+    "carbs_g": 8,
+    "fat_g": 2
+  },
+  "chobani": {
+    "description": "Chobani Greek Yoghurt",
+    "calories": 80,
+    "protein_g": 14,
+    "carbs_g": 6,
+    "fat_g": 0
+  },
+  "protein powder": {
+    "description": "ON protein powder (1 scoop)",
+    "calories": 120,
+    "protein_g": 24,
+    "carbs_g": 3,
+    "fat_g": 1.5
+  },
+  "soymilk": {
+    "description": "240ml soymilk",
+    "calories": 110,
+    "protein_g": 11,
+    "carbs_g": 5,
+    "fat_g": 5
+  },
+  "beef bulgogi": {
+    "description": "Beef bulgogi slice from Hankok, around 175g (1/3 pack)",
+    "calories": 340,
+    "protein_g": 35,
+    "carbs_g": 0,
+    "fat_g": 23
+  },
+  "white rice": {
+    "description": "One bowl of white rice bought from Hankok",
+    "calories": 290,
+    "protein_g": 6,
+    "carbs_g": 67,
+    "fat_g": 0.5
+  },
+  "twin Tofu": {
+    "description": "One pack of organic twin tofu from Hankok",
+    "calories": 175,
+    "protein_g": 17.5,
+    "carbs_g": 5,
+    "fat_g": 10
+  },
+  "sweet potato": {
+    "description": "Raw sweet potato",
+    "calories": 86,
+    "protein_g": 1.6,
+    "carbs_g": 20.1,
+    "fat_g": 0.1
+  },
+  "shiitake mushroom snack": {
+    "description": "Snak Yard organic dried shiitake mushroom, 1 serving (30g / 1/4 cup)",
+    "calories": 130,
+    "protein_g": 2,
+    "carbs_g": 23,
+    "fat_g": 3.5
+  },
+  "costco soymilk": {
+    "description": "Kirkland Organic Soymilk from Costco, 1 cup (240ml)",
+    "calories": 80,
+    "protein_g": 8,
+    "carbs_g": 3,
+    "fat_g": 4
+  },
+  "black cocoa powder": {
+    "description": "Black cocoa powder, 1 tbsp (7g)",
+    "calories": 15,
+    "protein_g": 2,
+    "carbs_g": 4,
+    "fat_g": 1
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "name": "health-coach",
+  "version": "1.0.0",
+  "description": "Personal health coach — Claude Code project with SQLite, Telegram, and web dashboard",
+  "type": "module",
+  "scripts": {
+    "dashboard": "tsx dashboard/server.ts"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.8.1",
+    "express": "^5.2.1",
+    "multer": "^2.1.1"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^7.6.12",
+    "@types/express": "^5.0.6",
+    "@types/multer": "^2.1.0",
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
