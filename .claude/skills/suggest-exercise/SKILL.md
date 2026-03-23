@@ -8,10 +8,10 @@ Suggest today's workout based on the user's data.
 
 ## Steps
 
-1. Query recent workout history (last 7 days):
+1. Query last 7 workouts with full exercise data:
 ```bash
 sqlite3 /Users/yihuima/health-coach/data/health.db "
-SELECT date, muscle_groups, duration_mins, notes
+SELECT date, exercises, muscle_groups, total_volume_lbs, duration_mins
 FROM workouts
 WHERE date >= date('now', '-13 hours', '-7 days')
 ORDER BY date DESC;
@@ -36,44 +36,52 @@ ORDER BY date DESC LIMIT 1;
 "
 ```
 
-4. Query recent workout weights for progressive overload context:
-```bash
-sqlite3 /Users/yihuima/health-coach/data/health.db "
-SELECT date, exercises FROM workouts ORDER BY date DESC LIMIT 10;
-"
-```
+4. Read `data/goals.md` for current phase, training protocol, target frequency, and compound lift priorities.
 
-5. Read `data/goals.md` for current phase, training protocol, and priorities.
-
-6. Reason through the recommendation:
-
-   **Muscle group selection:**
-   - Parse muscle_groups from recent workouts
+5. **Muscle group selection:**
+   - Parse muscle_groups from the 7 recent workouts
    - Eliminate any group trained within the last 48 hours
-   - If 5+ days without any resistance session, prioritize getting back regardless of rotation
-   - Cross-check with body_status — skip or modify for pain areas
+   - Cross-check with today's body_status — exclude or modify for pain areas
+   - If 5+ days without any resistance session, prioritize getting back in regardless of rotation
 
-   **Intensity calibration:**
+6. **Intensity calibration:**
    - Sleep < 6.5h → reduce load by 10–15%, maintain volume
    - Sleep 6.5–7.5h → normal training
    - Sleep ≥ 7.5h → full intensity
-   - HRV < 40ms (if available) → suggest deload or accessory-only session
+   - HRV < 40ms (if logged) → suggest deload or accessory-only session
    - fatigue_level ≥ 4 → reduce volume, not intensity
 
-   **Exercise selection:**
+7. **For each candidate muscle group, query the last 3 sessions to assess overload trajectory:**
+```bash
+sqlite3 /Users/yihuima/health-coach/data/health.db "
+SELECT date, exercises, total_volume_lbs
+FROM workouts
+WHERE muscle_groups LIKE '%[muscle_group]%'
+ORDER BY date DESC LIMIT 3;
+"
+```
+   - Parse the exercises JSON from each session
+   - For each key compound lift in that muscle group: is weight trending up, flat, or declining across the 3 sessions?
+   - Trajectory up → suggest +2.5 to 5kg vs last session
+   - Trajectory flat (2+ sessions same weight) → suggest +2.5kg, note "time to push"
+   - Trajectory declining → hold weight, focus on form and volume
+
+8. **Build the specific workout recommendation:**
    - Lead with 1–2 compound lifts (squat, deadlift, bench, row, OHP, hip hinge, pull-up)
    - Add 2–3 accessory exercises targeting the same group
-   - Rep ranges: 6–8 for strength focus, 8–12 for hypertrophy, 12–15 for endurance
-   - Suggest weights based on recent history: add 2.5–5 kg if last session was completed with good form
+   - For each compound lift: state the exact target weight and rep scheme based on last session + trajectory
+   - Rep ranges: 6–8 for strength, 8–12 for hypertrophy, 12–15 for endurance (use goals.md phase to guide)
 
-7. Output a specific recommendation:
-   - Muscle group(s) to train and why (rotation logic)
-   - 4–6 specific exercises with rep ranges and suggested weights
-   - Intensity/volume adjustment based on recovery (explain if adjusting)
-   - Estimated duration
+9. Output:
+   - Muscle group(s) to train and why (rotation logic, days since last trained)
+   - Per-exercise recommendation:
+     `• [Exercise] — [sets]×[reps] @ [weight]kg (last: [prev_kg]kg [↑/=/↓])`
+   - Intensity note if recovery is suboptimal (explain the adjustment)
+   - Estimated duration based on exercise count and rest periods
 
 ## Notes
-- Always explain the reasoning behind muscle group choice
-- If body pain overlaps with recommended muscle group, modify exercises (e.g. shoulder pain → sub overhead press with landmine press)
+- Always explain the rotation reasoning
+- If body pain overlaps with recommended muscle group, swap the exercise (e.g. shoulder pain → replace overhead press with landmine press or lateral raises)
 - Compound lifts always before accessories
-- If no workout history exists, suggest a full-body beginner session with compound movements
+- If no workout history exists, suggest a full-body beginner session
+- Read goals.md to confirm compound lift priority for the current phase
