@@ -57,6 +57,7 @@ ORDER BY date ASC;
 sqlite3 /Users/yihuima/health-coach/data/health.db "
 SELECT date, weight_kg, body_fat_pct, muscle_mass_kg
 FROM body_metrics
+WHERE date >= date('now', '-43 days')
 ORDER BY date DESC LIMIT 2;
 "
 ```

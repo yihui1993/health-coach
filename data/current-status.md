@@ -63,9 +63,9 @@ Last updated: 2026-02-28 (BodySpec scan)
 
 ## Nutrition Targets — Phase 1 (Mar–Jun 2026)
 
-- Calories: *1,500–1,600 kcal/day* (aggressive deficit — monitor lean mass closely)
+- Calories: *1,700–1,800 kcal/day* (moderate deficit — monitor lean mass closely)
 - Protein: *95–105 g/day* — prioritize above all other macros to protect muscle
-- Carbs: 130–160 g/day (timed around workouts)
+- Carbs: 150–180 g/day (timed around workouts)
 - Fat: 50–60 g/day (do not go lower — hormones)
 - Estimated TDEE: ~1,900–2,100 kcal/day (RMR 1,171 × ~1.6 activity factor)
 - If losing > 0.5 kg/week: increase by 100 kcal — fast scale drop = muscle loss risk

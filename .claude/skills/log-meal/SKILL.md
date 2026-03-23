@@ -75,7 +75,7 @@ FROM (
 
 8. **Protein projection** (only if current PDT hour < 18, i.e., before 6pm):
    - hours_elapsed = current PDT hour - 6 (hours since 6am)
-   - If hours_elapsed > 0: projected_protein = (protein_so_far / hours_elapsed) × 16
+   - If hours_elapsed > 0: projected_protein = (protein_so_far / hours_elapsed) × 16  — where 16 = hours in eating window (6am–10pm)
    - If projected_protein < protein_target: flag "On pace for ~[projected]g protein today — [gap]g short of target. Add a protein source at [next meal]."
 
 9. **Calorie ceiling check:**
