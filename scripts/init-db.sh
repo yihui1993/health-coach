@@ -57,6 +57,7 @@ CREATE TABLE IF NOT EXISTS workouts (
   exercises       TEXT,
   muscle_groups   TEXT,
   calories_burned INTEGER,
+  total_volume_lbs REAL,
   notes           TEXT,
   created_at      TEXT DEFAULT (datetime('now'))
 );
