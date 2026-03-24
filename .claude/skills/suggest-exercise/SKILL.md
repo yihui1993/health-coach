@@ -36,7 +36,7 @@ ORDER BY date DESC LIMIT 1;
 "
 ```
 
-4. Read `data/goals.md` for current phase, training protocol, target frequency, and compound lift priorities.
+4. Read `data/current-status.md` for current phase, training protocol, target frequency, and compound lift priorities.
 
 5. **Muscle group selection:**
    - Parse muscle_groups from the 7 recent workouts
@@ -70,7 +70,7 @@ ORDER BY date DESC LIMIT 3;
    - Lead with 1–2 compound lifts (squat, deadlift, bench, row, OHP, hip hinge, pull-up)
    - Add 2–3 accessory exercises targeting the same group
    - For each compound lift: state the exact target weight and rep scheme based on last session + trajectory
-   - Rep ranges: 6–8 for strength, 8–12 for hypertrophy, 12–15 for endurance (use goals.md phase to guide)
+   - Rep ranges: 6–8 for strength, 8–12 for hypertrophy, 12–15 for endurance (use current-status.md phase to guide)
 
 9. Output:
    - Muscle group(s) to train and why (rotation logic, days since last trained)
@@ -84,4 +84,4 @@ ORDER BY date DESC LIMIT 3;
 - If body pain overlaps with recommended muscle group, swap the exercise (e.g. shoulder pain → replace overhead press with landmine press or lateral raises)
 - Compound lifts always before accessories
 - If no workout history exists, suggest a full-body beginner session
-- Read goals.md to confirm compound lift priority for the current phase
+- Read current-status.md to confirm compound lift priority for the current phase

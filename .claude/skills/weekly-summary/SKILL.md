@@ -8,7 +8,7 @@ Generate a weekly summary of health data against active phase targets.
 
 ## Steps
 
-1. Read `data/goals.md` to extract:
+1. Read `data/current-status.md` to extract:
    - Active phase name and dates
    - Daily calorie target (ceiling)
    - Daily protein target
@@ -68,7 +68,7 @@ ORDER BY date DESC LIMIT 2;
    - workout_count = number of rows from step 2
    - muscle_groups_covered = union of all muscle_groups across sessions
    - max_gap = largest gap in days between consecutive sessions (or from last session to today)
-   - training_hit = workout_count ≥ weekly_frequency_target from goals.md
+   - training_hit = workout_count ≥ weekly_frequency_target from current-status.md
 
    **Nutrition (only count days with ≥ 1 meal logged):**
    - avg_kcal = average daily kcal across logged days
@@ -115,6 +115,6 @@ ORDER BY date DESC LIMIT 2;
 ```
 
 ## Notes
-- Source all targets from goals.md — never hardcode numbers
+- Source all targets from current-status.md — never hardcode numbers
 - Only count days with logged meals in nutrition averages (don't penalize for days with no data)
 - Keep the verdict actionable and specific to the data, not generic advice

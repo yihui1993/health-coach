@@ -71,7 +71,7 @@ FROM (
 "
 ```
 
-7. Read `data/goals.md` for daily calorie ceiling and protein target.
+7. Read `data/current-status.md` for daily calorie ceiling and protein target.
 
 8. **Protein projection** (only if current PDT hour < 18, i.e., before 6pm):
    - hours_elapsed = current PDT hour - 6 (hours since 6am)
@@ -79,7 +79,7 @@ FROM (
    - If projected_protein < protein_target: flag "On pace for ~[projected]g protein today — [gap]g short of target. Add a protein source at [next meal]."
 
 9. **Calorie ceiling check:**
-   - If today's kcal > daily ceiling from goals.md: flag "Today's calories ([kcal]) exceed the [ceiling] ceiling."
+   - If today's kcal > daily ceiling from current-status.md: flag "Today's calories ([kcal]) exceed the [ceiling] ceiling."
 
 10. Reply:
 
