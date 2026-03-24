@@ -86,9 +86,17 @@ ORDER BY date DESC LIMIT 2;
    - If two body_metrics entries exist within the last 30 days: show weight delta and direction
    - If no recent entries: note "No body scan in past 30 days"
 
-7. Write the summary verdict (1–2 sentences):
+7. Write the summary verdict as a synthesis paragraph (3–5 sentences):
    - Start with what's on track (met targets)
-   - End with the most important thing to fix this week
+   - Then connect patterns across domains — look for:
+     - Sleep quality on days before/after workouts (did poor sleep precede weak sessions?)
+     - Protein consistency vs training volume trends (is low protein correlating with volume plateaus?)
+     - Workout frequency vs nutrition logging gaps (are training days also well-logged nutrition days?)
+     - Body status patterns (recurring fatigue or pain that aligns with other trends)
+   - End with 2–3 specific, actionable items for next week. These must reference actual data, not generic advice. Examples:
+     - "Prioritize 7+ hours of sleep before leg days — both short nights this week preceded your weakest sessions."
+     - "Aim for 100g protein on training days — you averaged 82g on workout days vs 95g on rest days."
+     - "Add one more resistance session — you hit 2/3 target and the gap was after Thursday's poor sleep."
 
 8. Reply in this format (no markdown headers, use bullet points):
 
@@ -111,10 +119,12 @@ ORDER BY date DESC LIMIT 2;
 • [Weight delta or "No scan in past 30 days"]
 
 *Verdict*
-[1–2 sentences: what's working + top priority for next week]
+[3–5 sentence synthesis: what's working, cross-domain connections, then 2–3 specific action items for next week]
 ```
 
 ## Notes
 - Source all targets from current-status.md — never hardcode numbers
 - Only count days with logged meals in nutrition averages (don't penalize for days with no data)
-- Keep the verdict actionable and specific to the data, not generic advice
+- The verdict must connect patterns across training, nutrition, and sleep — never assess each domain in isolation
+- Every action item must reference specific numbers from this week's data
+- Generic advice like "eat more protein" or "sleep better" is not acceptable — use "aim for 100g protein on Mon/Wed/Fri (your training days)" instead
