@@ -12,8 +12,7 @@ If `data/health.db` does not exist, run `/setup` before anything else.
 |------|---------|
 | `data/health.db` | All health data (SQLite) |
 | `data/nutrition-lookup.json` | Named meal shortcuts with exact macros |
-| `data/current-status.md` | Latest body composition snapshot — always read before making recommendations |
-| `data/goals.md` | Active goals and daily macro targets — always read before making recommendations |
+| `data/current-status.md` | Body composition, active phase targets, and full recomposition plan — always read before making recommendations |
 
 ## Skills
 
@@ -26,16 +25,12 @@ If `data/health.db` does not exist, run `/setup` before anything else.
 | `/log-exercise` | Log a workout from screenshot or text description |
 | `/suggest-exercise` | Get a workout suggestion based on history and recovery |
 | `/launch-dashboard` | Start web dashboard at localhost:3001 |
-| `/sync-bodyspec` | Pull latest BodySpec DEXA scans into the database |
-| `/add-telegram` | Set up Telegram bot + claude-plugins-official plugin |
-| `/add-bodyspec` | Set up BodySpec MCP connection |
 
 ## Always Read Before Responding
 
-Before any health recommendation, read `data/current-status.md` and `data/goals.md`. Every suggestion must be grounded in the user's actual data — never give generic advice.
+Before any health recommendation, read `data/current-status.md`. Every suggestion must be grounded in the user's actual data — never give generic advice.
 
 Update `data/current-status.md` whenever:
-- A new BodySpec scan is synced
 - The user provides updated body weight or composition measurements
 
 ## Day Boundary Rule
@@ -79,7 +74,7 @@ Triggers: photo of food, "I just had...", "I ate...", "for lunch...", "had a cof
 2. Estimate remaining items with USDA values
 3. Infer meal_type from time (breakfast 6–10am, lunch 11am–2pm, dinner 5–9pm, snack otherwise)
 4. Log immediately with `sqlite3`
-5. Show today's running totals vs active goal targets from `data/goals.md`
+5. Show today's running totals vs active goal targets from `data/current-status.md`
 
 ### Sleep — bedtime and wake time
 
@@ -116,7 +111,7 @@ When asked "what should I do at the gym?":
 4. Apply 48h rule — never suggest same muscle group trained < 48h ago
 5. Prioritize compound lifts (squat, deadlift, bench, row, OHP, hip hinge)
 6. Check progressive overload opportunity: suggest +2.5–5kg vs last session if successful
-7. Read active phase targets and training protocol from `data/goals.md`
+7. Read active phase targets and training protocol from `data/current-status.md`
 
 ## Proactive Monitoring
 
