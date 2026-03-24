@@ -95,12 +95,13 @@ Add a standardized "context gather" query block that every skill runs at the sta
 
 ### 4. Nutrition Lookup Expansion
 
-- **Proactive shortcut suggestions** — After logging, check if a similar meal (same key ingredients, within 15% macro range) has been logged 2+ times in last 30 days. Suggest adding it as a named shortcut with averaged macros.
+- **Proactive shortcut suggestions** — Defined in Section 1, Step 6 (auto-lookup expansion). The `log-meal` skill handles the detection and suggestion after each logged meal.
 - **Portion multipliers** — Allow entries to be referenced with multipliers (e.g., "2x standard breakfast"). The skill multiplies the stored macros. This is a prompt convention, not a schema change.
 - **Restaurant/store entries** — Encourage building out entries for regular restaurants and store-bought meals, since these have the most consistent portions.
 
 ### 5. Stale Reference Fixes
 
+- **log-meal** — reads `data/goals.md` which was deleted. Update to `data/current-status.md`.
 - **suggest-exercise** — reads `data/goals.md` which was deleted. Update to `data/current-status.md`.
 - **weekly-summary** — reads `data/goals.md` which was deleted. Update to `data/current-status.md`.
 
@@ -108,7 +109,7 @@ Add a standardized "context gather" query block that every skill runs at the sta
 
 | File | Change |
 |---|---|
-| `.claude/skills/log-meal/SKILL.md` | Photo estimation protocol, cross-cutting context, meal-specific feedback, projection upgrade, auto-lookup suggestion |
+| `.claude/skills/log-meal/SKILL.md` | Photo estimation protocol, cross-cutting context, meal-specific feedback, projection upgrade, auto-lookup suggestion, fix goals.md → current-status.md |
 | `.claude/skills/log-exercise/SKILL.md` | Cross-cutting context, 3-session trajectory comparison, recovery-linked volume decline explanation |
 | `.claude/skills/suggest-exercise/SKILL.md` | Cross-cutting context, synthesis-driven recommendations, session duration estimate, fix goals.md → current-status.md |
 | `.claude/skills/weekly-summary/SKILL.md` | Cross-cutting synthesis verdict, action items, fix goals.md → current-status.md |
