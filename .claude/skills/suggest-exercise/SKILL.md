@@ -36,22 +36,54 @@ ORDER BY date DESC LIMIT 1;
 "
 ```
 
-4. Read `data/current-status.md` for current phase, training protocol, target frequency, and compound lift priorities.
+4. Query trailing nutrition context:
+```bash
+sqlite3 /Users/yihuima/health-coach/data/health.db "
+-- 7-day protein stats
+SELECT
+  ROUND(AVG(day_protein), 1) as avg_protein,
+  SUM(CASE WHEN day_protein >= [PROTEIN_TARGET] THEN 1 ELSE 0 END) as protein_hit_days,
+  COUNT(*) as logged_days,
+  ROUND(AVG(day_kcal), 0) as avg_kcal
+FROM (
+  SELECT date(timestamp, '-6 hours') as day,
+    SUM(estimated_protein_g) as day_protein,
+    SUM(estimated_calories) as day_kcal
+  FROM meals
+  WHERE date(timestamp, '-6 hours') >= date('now', '-13 hours', '-7 days')
+    AND date(timestamp, '-6 hours') < date('now', '-13 hours')
+  GROUP BY day
+);
+"
+```
+Replace [PROTEIN_TARGET] with the protein target from current-status.md.
 
-5. **Muscle group selection:**
+5. Read `data/current-status.md` for current phase, training protocol, target frequency, and compound lift priorities.
+
+6. **Muscle group selection:**
    - Parse muscle_groups from the 7 recent workouts
    - Eliminate any group trained within the last 48 hours
    - Cross-check with today's body_status — exclude or modify for pain areas
    - If 5+ days without any resistance session, prioritize getting back in regardless of rotation
 
-6. **Intensity calibration:**
+7. **Intensity calibration (synthesize sleep + nutrition + body status):**
+
+   Start by assessing overall readiness:
+   - Count the negative factors: sleep < 6.5h, protein hit rate < 4/7 days, fatigue_level ≥ 4, HRV < 40ms
+   - 0 negatives → full intensity, encourage progressive overload
+   - 1 negative → normal training, note the factor
+   - 2+ negatives → reduce load by 10–15%, maintain volume, explain why
+
+   Specific rules:
    - Sleep < 6.5h → reduce load by 10–15%, maintain volume
-   - Sleep 6.5–7.5h → normal training
-   - Sleep ≥ 7.5h → full intensity
+   - Sleep ≥ 7.5h → full intensity, good day to push
    - HRV < 40ms (if logged) → suggest deload or accessory-only session
    - fatigue_level ≥ 4 → reduce volume, not intensity
+   - Protein hit rate < 4/7 days → note "Protein has been below target most of the past week — recovery fuel is limited. Consider holding weights rather than pushing overload today."
+   - If 2+ negatives: frame as "Today is a maintenance day — focus on form and consistency rather than PRs. Here's why: [list factors]."
+   - If 0 negatives + sleep ≥ 7.5h: frame as "Great recovery signals — this is a good day to push. Here's why: [list factors]."
 
-7. **For each candidate muscle group, query the last 3 sessions to assess overload trajectory:**
+8. **For each candidate muscle group, query the last 3 sessions to assess overload trajectory:**
 ```bash
 sqlite3 /Users/yihuima/health-coach/data/health.db "
 SELECT date, exercises, total_volume_lbs
@@ -66,18 +98,19 @@ ORDER BY date DESC LIMIT 3;
    - Trajectory flat (2+ sessions same weight) → suggest +2.5kg, note "time to push"
    - Trajectory declining → hold weight, focus on form and volume
 
-8. **Build the specific workout recommendation:**
+9. **Build the specific workout recommendation:**
    - Lead with 1–2 compound lifts (squat, deadlift, bench, row, OHP, hip hinge, pull-up)
    - Add 2–3 accessory exercises targeting the same group
    - For each compound lift: state the exact target weight and rep scheme based on last session + trajectory
    - Rep ranges: 6–8 for strength, 8–12 for hypertrophy, 12–15 for endurance (use current-status.md phase to guide)
 
-9. Output:
+10. Output:
+   - **Readiness summary** (1 sentence): synthesize sleep + nutrition + body status into an overall readiness assessment. Example: "Good recovery: 7.5h sleep, protein on target 6/7 days, no fatigue reported → full intensity today." Or: "Mixed signals: 5.8h sleep + protein below target 5/7 days → moderate session, hold weights."
    - Muscle group(s) to train and why (rotation logic, days since last trained)
    - Per-exercise recommendation:
      `• [Exercise] — [sets]×[reps] @ [weight]kg (last: [prev_kg]kg [↑/=/↓])`
-   - Intensity note if recovery is suboptimal (explain the adjustment)
-   - Estimated duration based on exercise count and rest periods
+   - Intensity note if recovery is suboptimal (explain the cause-effect connection so the user learns why)
+   - **Estimated duration:** [X] minutes — based on [N] exercises × ~3 sets × [rest] rest between sets. Use 90s rest for compound lifts, 60s for accessories.
 
 ## Notes
 - Always explain the rotation reasoning
