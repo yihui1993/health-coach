@@ -41,7 +41,16 @@ VALUES (
 "
 ```
 
-6. Confirm with a brief response:
+6. Check recent training context:
+```bash
+sqlite3 /Users/yihuima/health-coach/data/health.db "
+-- Days since last workout
+SELECT CAST(julianday(date('now', '-13 hours')) - julianday(MAX(date)) AS INTEGER) as days_since
+FROM workouts;
+"
+```
+
+7. Confirm with a brief response:
    - Sleep duration
    - Avg HR if logged
    - HRV if logged
@@ -50,6 +59,9 @@ VALUES (
      - 6.5–7.4h → neutral
      - ≥ 7.5h → "Good recovery window for muscle repair."
    - If HRV is notably low (< 40ms) → flag: "Low HRV suggests incomplete recovery — consider a deload or rest day."
+   - Training context (if relevant):
+     - If days_since_last_workout ≤ 1: "You trained [yesterday/today] — this sleep duration [supports/may limit] recovery."
+     - If days_since_last_workout ≥ 5: "No workout in [X] days — a session today would be well-rested."
 
 ## Notes
 - Always use PDT (UTC-7) for all timestamps
