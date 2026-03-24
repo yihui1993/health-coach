@@ -55,45 +55,70 @@ VALUES (
 "
 ```
 
-7. Query the last session that trained any of the same muscle groups (for comparison):
+7. Gather cross-cutting context:
+```bash
+sqlite3 /Users/yihuima/health-coach/data/health.db "
+-- 7-day avg protein
+SELECT 'nutrition' as ctx,
+  ROUND(AVG(day_protein), 1) as avg_protein,
+  SUM(CASE WHEN day_protein >= [PROTEIN_TARGET] THEN 1 ELSE 0 END) as hit_days,
+  COUNT(*) as total_days
+FROM (
+  SELECT date(timestamp, '-6 hours') as day, SUM(estimated_protein_g) as day_protein
+  FROM meals
+  WHERE date(timestamp, '-6 hours') >= date('now', '-13 hours', '-7 days')
+    AND date(timestamp, '-6 hours') < date('now', '-13 hours')
+  GROUP BY day
+);
+
+-- Today's body status
+SELECT 'status' as ctx, muscle_pain, fatigue_level, mood FROM body_status WHERE date(date, '-6 hours') = date('now', '-13 hours');
+"
+```
+Replace [PROTEIN_TARGET] with the protein target from current-status.md.
+
+8. Query the last 3 sessions that trained any of the same muscle groups (for trajectory):
 ```bash
 sqlite3 /Users/yihuima/health-coach/data/health.db "
 SELECT id, date, exercises, muscle_groups, total_volume_lbs
 FROM workouts
 WHERE date < date('now', '-13 hours')
   AND muscle_groups LIKE '%[first_muscle_group]%'
-ORDER BY date DESC LIMIT 1;
+ORDER BY date DESC LIMIT 3;
 "
 ```
 Replace [first_muscle_group] with the first item in today's muscle_groups array (e.g. 'quads').
 
-8. Build the progressive overload comparison:
-   - Parse today's exercises JSON and the previous session's exercises JSON
-   - For each exercise that appears in BOTH sessions:
-     - Show: `• [Name]: [prev_sets]×[prev_reps] @ [prev_kg]kg → [today_sets]×[today_reps] @ [today_kg]kg [↑/=/↓]`
-     - Direction: ↑ if today's avg weight > previous, ↓ if lower, = if same
-   - If today's total_volume_lbs < previous session's total_volume_lbs:
-     - Query last sleep and today's body_status to check for recovery reason:
-```bash
-sqlite3 /Users/yihuima/health-coach/data/health.db "
-SELECT duration_hours FROM sleep_log ORDER BY date DESC LIMIT 1;
-SELECT muscle_pain, fatigue_level FROM body_status WHERE date(date, '-6 hours') = date('now', '-13 hours');
-"
-```
-     - If sleep < 6.5h OR muscle_pain logged: note "Volume dip consistent with recovery"
-     - Otherwise: flag "Volume dropped vs last session — intentional deload or form issue?"
+9. Build the progressive overload trajectory:
+   - Parse today's exercises JSON and the previous sessions' exercises JSON (up to 3 prior sessions)
+   - For each exercise that appears in today's AND at least one prior session:
+     - Show the weight trajectory across all available sessions:
+       `• [Name]: [s1_kg]kg → [s2_kg]kg → [s3_kg]kg → [today_kg]kg [trajectory]`
+     - Trajectory labels:
+       - 3+ sessions trending up → "steady progression"
+       - 2+ sessions at same weight, today up → "breakthrough"
+       - 2+ sessions at same weight → "plateau — time to push"
+       - 2+ sessions trending down → "declining — check recovery"
+   - If today's total_volume_lbs < most recent prior session's total_volume_lbs:
+     - Check the cross-cutting context gathered in step 7:
+       - If last sleep < 6.5h: note "Volume dip likely related to last night's [X]h sleep"
+       - If 7-day protein avg < target: note "Protein has averaged [X]g over the past week vs [target]g target — may be affecting recovery"
+       - If fatigue_level logged and ≥ 3: note "You reported fatigue today — volume dip is consistent"
+       - If none of the above apply: flag "Volume dropped vs last session — intentional deload or form issue?"
 
-9. Query last 7 workouts for rotation context:
+10. Query last 7 workouts for rotation context:
 ```bash
 sqlite3 /Users/yihuima/health-coach/data/health.db "
 SELECT date, muscle_groups FROM workouts ORDER BY date DESC LIMIT 7;
 "
 ```
 
-10. Reply with:
+11. Reply with:
     - Session summary: muscles trained, key exercises, duration if known, calories if tracked
-    - Progressive overload table (step 8) — skip section if no previous session exists
+    - Progressive overload trajectory (step 9) — skip section if no previous session exists
     - Total volume: [today] lbs vs [previous] lbs (or just today's if first session)
+    - [If 7-day protein hit rate < 4/7: "Nutrition note: protein has been below target [X] of the last 7 days — recovery may be compromised. Prioritize protein today."]
+    - [If body_status has pain or fatigue: "Recovery note: [pain/fatigue details from body_status] — factor this into tomorrow's session."]
     - What to train next based on 48h rotation rule
 
 ## Notes
