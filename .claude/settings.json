@@ -9,8 +9,5 @@
       "Grep(*)",
       "MultiEdit(*)"
     ]
-  },
-  "plugins": [
-    "telegram@claude-plugins-official"
-  ]
+  }
 }

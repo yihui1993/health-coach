@@ -2,10 +2,6 @@
 
 Personal health coach powered by Claude Code. Tracks meals, sleep, workouts, and body composition. All data stored locally in SQLite.
 
-## First Run
-
-If `data/health.db` does not exist, run `/setup` before anything else.
-
 ## Key Files
 
 | File | Purpose |
@@ -18,7 +14,6 @@ If `data/health.db` does not exist, run `/setup` before anything else.
 
 | Skill | When to Use |
 |-------|-------------|
-| `/setup` | First-time setup: Telegram, BodySpec, goals, initial body data |
 | `/log-meal` | Log food intake — checks nutrition-lookup.json first |
 | `/add-food-lookup` | Add or update a named food shortcut in nutrition-lookup.json |
 | `/log-sleep` | Log sleep time, optional avg heart rate and HRV |
@@ -59,10 +54,6 @@ Every message containing health data must be logged to the database before compo
 Database path: `/Users/yihuima/health-coach/data/health.db`
 Nutrition lookup: `/Users/yihuima/health-coach/data/nutrition-lookup.json`
 
-Initialize if missing:
-```bash
-bash /Users/yihuima/health-coach/scripts/init-db.sh
-```
 
 ## What to Log and When
 

@@ -41,14 +41,7 @@ cp /Users/yihuima/NanoClaw/groups/telegram_health/health/current-status.md \
    /Users/yihuima/health-coach/data/current-status.md
 ```
 
-- [ ] **Step 2: Copy goals.md**
-
-```bash
-cp /Users/yihuima/NanoClaw/groups/telegram_health/goals/body_recomposition_2026.md \
-   /Users/yihuima/health-coach/data/goals.md
-```
-
-- [ ] **Step 3: Verify both files exist and have content**
+- [ ] **Step 2: Verify both files exist and have content**
 
 ```bash
 wc -l /Users/yihuima/health-coach/data/current-status.md \

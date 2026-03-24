@@ -58,7 +58,6 @@ All paths are absolute.
 |--------|--------|------|
 | `/Users/yihuima/NanoClaw/groups/telegram_health/meal-shortcuts.json` | `/Users/yihuima/health-coach/data/nutrition-lookup.json` | Merge: add all source-only keys; for keys in both, keep target value |
 | `/Users/yihuima/NanoClaw/groups/telegram_health/health/current-status.md` | `/Users/yihuima/health-coach/data/current-status.md` | Copy (overwrite if exists) |
-| `/Users/yihuima/NanoClaw/groups/telegram_health/goals/body_recomposition_2026.md` | `/Users/yihuima/health-coach/data/goals.md` | Copy (overwrite if exists) |
 
 ## Section 2: Schema Change
 
